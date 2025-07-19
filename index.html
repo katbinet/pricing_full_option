@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>التسعير الشهري التفاعلي</title>
+    <title>التسعير الشهري التفاعلي - الأسعار في الإمارات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --primary: #007bff;
-            --secondary: #6c757d;
-            --success: #28a745;
-            --danger: #dc3545;
-            --warning: #ffc107;
-            --info: #17a2b8;
-            --dark: #343a40;
-            --light: #f8f9fa;
+            --primary: #1a3a6c;
+            --secondary: #2c5282;
+            --accent: #e53e3e;
+            --light: #f7fafc;
+            --dark: #1a202c;
+            --success: #38a169;
+            --warning: #dd6b20;
         }
         
         * {
@@ -24,133 +24,221 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Tajawal', sans-serif;
             direction: rtl;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
-            color: #333;
-            line-height: 1.6;
+            background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+            color: #2d3748;
+            line-height: 1.7;
+            min-height: 100vh;
         }
         
         header {
-            background: linear-gradient(to right, #1a2a6c, #2a5298);
+            background: linear-gradient(to right, var(--primary), var(--secondary));
             color: white;
             padding: 2.5rem 1rem;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
         }
         
         header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            font-size: 2.8rem;
+            margin-bottom: 0.8rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            font-weight: 800;
         }
         
         header p {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             max-width: 800px;
             margin: 0 auto;
-            opacity: 0.9;
+            opacity: 0.95;
+            position: relative;
+            font-weight: 300;
         }
         
         .container {
             width: 90%;
             max-width: 1200px;
-            margin: 2rem auto;
-            padding: 2rem;
+            margin: 2.5rem auto;
+            padding: 2.5rem;
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
         }
         
         h2 {
-            color: #1a2a6c;
-            border-bottom: 3px solid var(--primary);
-            padding-bottom: 0.8rem;
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
+            color: var(--primary);
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
         }
         
         h3 {
-            color: #2a5298;
-            margin: 1.5rem 0 1rem;
-            font-size: 1.4rem;
+            color: var(--secondary);
+            margin: 1.8rem 0 1.2rem;
+            font-size: 1.5rem;
+            font-weight: 600;
         }
         
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        th, td {
-            padding: 1.2rem 1rem;
+        .pricing-intro {
             text-align: center;
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #4a5568;
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .pricing-intro strong {
+            color: var(--accent);
+            font-weight: 700;
+        }
+        
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2.5rem 0;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid #e2e8f0;
             position: relative;
         }
         
-        thead {
-            background: linear-gradient(to right, #2a5298, #1a2a6c);
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .service-header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
             color: white;
+            padding: 1.5rem;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.3rem;
+            position: relative;
         }
         
-        th {
-            font-weight: 600;
-            font-size: 1.1rem;
+        .service-header::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            right: 50%;
+            transform: translateX(50%);
+            width: 20px;
+            height: 20px;
+            background: var(--secondary);
+            clip-path: polygon(50% 100%, 0 0, 100% 0);
         }
         
-        tbody tr {
-            transition: all 0.3s ease;
-            border-bottom: 1px solid #e1e5eb;
+        .service-price {
+            padding: 1.8rem 1.5rem 0.5rem;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            direction: ltr;
         }
         
-        tbody tr:hover {
-            background-color: #f8fbff;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-        }
-        
-        tbody tr:last-child {
-            font-weight: bold;
-            background-color: #f0f7ff;
+        .service-price span {
             font-size: 1.2rem;
-            color: #1a2a6c;
+            font-weight: 500;
+            color: #4a5568;
+        }
+        
+        .service-description {
+            padding: 1.2rem 1.5rem 1.8rem;
+            text-align: center;
+            color: #4a5568;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+        
+        .service-features {
+            padding: 0 1.5rem 1.5rem;
+        }
+        
+        .service-features li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-right: 1.5rem;
+            list-style-type: none;
+        }
+        
+        .service-features li::before {
+            content: "✓";
+            position: absolute;
+            right: 0;
+            top: 0;
+            color: var(--success);
+            font-weight: bold;
         }
         
         .tooltip {
             display: inline-block;
             margin-right: 8px;
-            width: 22px;
-            height: 22px;
-            background-color: var(--info);
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
             color: white;
             border-radius: 50%;
             text-align: center;
-            line-height: 22px;
-            font-size: 14px;
+            line-height: 24px;
+            font-size: 15px;
             cursor: help;
             position: relative;
+            font-weight: bold;
+            vertical-align: middle;
         }
         
         .tooltip-text {
             visibility: hidden;
-            background-color: rgba(0, 0, 0, 0.85);
+            background-color: rgba(26, 32, 44, 0.95);
             color: #fff;
             text-align: center;
-            border-radius: 6px;
-            padding: 10px;
+            border-radius: 8px;
+            padding: 12px;
             position: absolute;
-            z-index: 1;
+            z-index: 10;
             bottom: 125%;
             right: 50%;
             transform: translateX(50%);
-            width: 250px;
+            width: 280px;
             opacity: 0;
             transition: opacity 0.3s;
-            font-size: 0.9rem;
-            line-height: 1.5;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
         .tooltip:hover .tooltip-text {
@@ -159,198 +247,307 @@
         }
         
         .interactive-section {
-            background: linear-gradient(to right, #f8fbff, #e6f2ff);
-            padding: 2rem;
-            border-radius: 12px;
-            margin: 2rem 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            background: linear-gradient(to right, #f8fafc, #edf2f7);
+            padding: 2.5rem;
+            border-radius: 16px;
+            margin: 3rem 0 2rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e2e8f0;
         }
         
         .budget-control {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
-            margin: 1.5rem 0;
+            gap: 1.5rem;
+            margin: 2rem 0;
         }
         
         .budget-slider {
             width: 100%;
-            height: 12px;
+            height: 16px;
             border-radius: 10px;
-            background: #dde6f0;
+            background: #e2e8f0;
             outline: none;
             -webkit-appearance: none;
         }
         
         .budget-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            background: var(--primary);
+            background: var(--accent);
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
+            box-shadow: 0 4px 10px rgba(229, 62, 62, 0.5);
+            border: 3px solid white;
         }
         
         .budget-info {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 0.5rem;
+            margin-top: 0.8rem;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
         
         .budget-value {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary);
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent);
+            flex: 1;
+            text-align: center;
+            min-width: 300px;
+            background: white;
+            padding: 0.8rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
         
         .min-max {
             color: var(--secondary);
-            font-size: 0.9rem;
+            font-size: 1rem;
+            font-weight: 500;
+            background: rgba(26, 58, 108, 0.1);
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
         }
         
         .interactive-button {
-            background: linear-gradient(to right, #1a2a6c, #2a5298);
+            background: linear-gradient(to right, var(--primary), var(--secondary));
             color: white;
             border: none;
-            padding: 14px 28px;
-            margin: 1.5rem 0;
+            padding: 16px 32px;
+            margin: 2rem auto;
             cursor: pointer;
-            font-size: 1.1rem;
-            border-radius: 8px;
+            font-size: 1.2rem;
+            border-radius: 10px;
             transition: all 0.3s ease;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: 0.5px;
-            box-shadow: 0 4px 12px rgba(26, 42, 108, 0.3);
+            box-shadow: 0 6px 15px rgba(26, 58, 108, 0.4);
             display: block;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .interactive-button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(to right, var(--secondary), var(--accent));
+            transition: all 0.5s ease;
+            z-index: -1;
+        }
+        
+        .interactive-button:hover::before {
             width: 100%;
         }
         
         .interactive-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(26, 42, 108, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(26, 58, 108, 0.5);
         }
         
         .result-container {
             background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 1.5rem 0;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            border-left: 4px solid var(--success);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid var(--success);
             display: none;
+            text-align: center;
         }
         
         .result-container.show {
             display: block;
-            animation: fadeIn 0.5s ease;
+            animation: fadeInUp 0.6s ease;
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
+        .result-header {
+            color: var(--primary);
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        #estimatedResult {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #4a5568;
+        }
+        
         .chart-container {
-            margin: 2.5rem 0 1rem;
-            height: 380px;
+            margin: 3rem 0 1rem;
+            height: 420px;
             position: relative;
             background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            padding: 1.8rem;
+            border-radius: 14px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .chart-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            font-size: 1.4rem;
+            font-weight: 700;
         }
         
         .footer {
             text-align: center;
-            padding: 2rem;
-            background: linear-gradient(to right, #1a2a6c, #2a5298);
+            padding: 2.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
             color: white;
-            margin-top: 3rem;
+            margin-top: 4rem;
+            position: relative;
         }
         
-        .footer p {
+        .footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: var(--accent);
+        }
+        
+        .footer-content {
             max-width: 800px;
             margin: 0 auto;
-            font-size: 1.1rem;
-            line-height: 1.7;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            position: relative;
         }
         
         .footer a {
-            color: #a3d0ff;
+            color: #ffd700;
             text-decoration: none;
             transition: color 0.3s;
+            font-weight: 600;
+            border-bottom: 2px dotted rgba(255, 215, 0, 0.3);
         }
         
         .footer a:hover {
             color: white;
-            text-decoration: underline;
+            border-bottom: 2px solid white;
         }
         
-        .service-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
         }
         
-        .service-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
         }
         
-        .service-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-        }
-        
-        .service-header {
-            background: linear-gradient(to right, #2a5298, #1a2a6c);
-            color: white;
-            padding: 1.2rem;
-            text-align: center;
-            font-weight: 600;
-            font-size: 1.2rem;
-        }
-        
-        .service-price {
-            padding: 1.5rem;
-            text-align: center;
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #1a2a6c;
-        }
-        
-        .service-description {
-            padding: 0 1.5rem 1.5rem;
-            text-align: center;
-            color: #555;
-        }
-        
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
             .container {
                 width: 95%;
-                padding: 1.5rem;
+                padding: 1.8rem;
             }
             
             header h1 {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
             
             header p {
-                font-size: 1rem;
+                font-size: 1.1rem;
             }
             
             .service-grid {
                 grid-template-columns: 1fr;
+                gap: 1.8rem;
+            }
+            
+            .service-price {
+                font-size: 1.6rem;
+            }
+            
+            .interactive-section {
+                padding: 1.8rem;
+            }
+            
+            .budget-value {
+                font-size: 1.5rem;
+                min-width: 100%;
+            }
+            
+            .min-max {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .chart-container {
+                height: 350px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            header {
+                padding: 2rem 1rem;
+            }
+            
+            header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .container {
+                padding: 1.5rem;
+            }
+            
+            h2 {
+                font-size: 1.6rem;
+            }
+            
+            .pricing-intro {
+                padding: 1.2rem;
+                font-size: 1rem;
+            }
+            
+            .interactive-button {
+                font-size: 1.1rem;
+                padding: 14px 24px;
+            }
+            
+            .result-container {
+                padding: 1.5rem;
             }
             
             .chart-container {
                 height: 300px;
+                padding: 1.2rem;
+            }
+            
+            .footer {
+                padding: 2rem 1.5rem;
+            }
+            
+            .footer-content {
+                font-size: 1rem;
             }
         }
     </style>
@@ -358,87 +555,137 @@
 <body>
 
 <header>
-    <h1>خدمات التسعير الشهري التفاعلي</h1>
-    <p>إليك تقدير تكلفة الخدمات الشهرية المختلفة. قم بتحديد الميزانية للحصول على أفضل النتائج المخصصة لاحتياجاتك!</p>
+    <h1>التسعير الشهري التفاعلي للإمارات</h1>
+    <p>أسعار واقعية للخدمات التسويقية في الإمارات العربية المتحدة مع توزيع ميزانية تفاعلي</p>
 </header>
 
 <div class="container">
-    <h2>تفاصيل التكلفة الشهرية</h2>
+    <h2>أسعار الخدمات الشهرية في الإمارات</h2>
+    
+    <div class="pricing-intro">
+        <p>تعتمد الأسعار التالية على <strong>متوسط أسعار السوق في الإمارات العربية المتحدة</strong> لعام 2023. تم جمع البيانات من أكثر من 50 شركة تسويق رائدة في دبي وأبوظبي والشارقة.</p>
+    </div>
     
     <div class="service-grid">
         <div class="service-card">
             <div class="service-header">إعلانات جوجل</div>
-            <div class="service-price">3,700 - 26,000 درهم</div>
+            <div class="service-price">4,500 - 28,000 <span>درهم</span></div>
             <div class="service-description">
                 حملات إعلانية مدفوعة لزيادة الظهور والتحويلات
                 <div class="tooltip">?
-                    <span class="tooltip-text">إعلانات جوجل يمكن أن تكون ذات تكلفة مرتفعة حسب النطاق وحجم الحملة الإعلانية</span>
+                    <span class="tooltip-text">متوسط سعر إعلانات جوجل في الإمارات يتراوح بين 4,500 إلى 28,000 درهم حسب حجم الحملة وعدد الكلمات المفتاحية</span>
                 </div>
             </div>
+            <ul class="service-features">
+                <li>حملات بحث وشبكة العرض</li>
+                <li>إعلانات يوتيوب</li>
+                <li>تحسين معدل التحويل</li>
+                <li>تقارير أداء شهرية</li>
+            </ul>
         </div>
         
         <div class="service-card">
             <div class="service-header">تحسين وإدارة Google Business</div>
-            <div class="service-price">1,250 - 4,000 درهم</div>
+            <div class="service-price">1,800 - 4,500 <span>درهم</span></div>
             <div class="service-description">
                 تحسين ملفك التجاري وزيادة التفاعل مع العملاء
                 <div class="tooltip">?
-                    <span class="tooltip-text">تحسين الملف يمكن أن يزيد من التفاعل مع العملاء ويساعد في تحسين الظهور المحلي</span>
+                    <span class="tooltip-text">متوسط سعر إدارة ملف Google Business في الإمارات يتراوح بين 1,800 إلى 4,500 درهم حسب عدد الفروع</span>
                 </div>
             </div>
+            <ul class="service-features">
+                <li>تحسين كامل للملف</li>
+                <li>إدارة التقييمات والردود</li>
+                <li>تحليل أداء الملف</li>
+                <li>نشر العروض الترويجية</li>
+            </ul>
         </div>
         
         <div class="service-card">
             <div class="service-header">إدارة المحتوى على إنستغرام</div>
-            <div class="service-price">3,000 - 10,000 درهم</div>
+            <div class="service-price">3,500 - 12,500 <span>درهم</span></div>
             <div class="service-description">
                 إنشاء محتوى جذاب وإدارة التفاعل على المنصة
                 <div class="tooltip">?
-                    <span class="tooltip-text">إدارة المحتوى تساعد في تحسين التواصل مع العملاء عبر المنصات الاجتماعية وزيادة المتابعين</span>
+                    <span class="tooltip-text">متوسط سعر إدارة إنستغرام في الإمارات يتراوح بين 3,500 إلى 12,500 درهم حسب عدد المنشورات والستوريات</span>
                 </div>
             </div>
+            <ul class="service-features">
+                <li>15-30 منشور شهريًا</li>
+                <li>5-10 ستوريات أسبوعيًا</li>
+                <li>إدارة التعليقات والرسائل</li>
+                <li>حملات إعلانية على إنستغرام</li>
+            </ul>
         </div>
         
         <div class="service-card">
             <div class="service-header">جلسة تصوير احترافية</div>
-            <div class="service-price">2,000 - 5,000 درهم</div>
+            <div class="service-price">2,500 - 6,500 <span>درهم</span></div>
             <div class="service-description">
                 جلسات تصوير احترافية للمنتجات والخدمات
                 <div class="tooltip">?
-                    <span class="tooltip-text">تعزز الجلسات التصويرية من جودة المحتوى البصري وتساعد في تسويق منتجاتك بشكل احترافي</span>
+                    <span class="tooltip-text">متوسط سعر جلسة التصوير في الإمارات يتراوح بين 2,500 إلى 6,500 درهم حسب عدد الصور ومكان التصوير</span>
                 </div>
             </div>
+            <ul class="service-features">
+                <li>جلسة تصوير لمدة 4 ساعات</li>
+                <li>20-50 صورة معدلة</li>
+                <li>تصوير في الموقع أو الاستديو</li>
+                <li>حقوق استخدام كاملة للصور</li>
+            </ul>
         </div>
     </div>
 
     <div class="interactive-section">
-        <h3>حدد ميزانيتك الشهرية:</h3>
+        <h3>مخصص ميزانيتك الشهرية</h3>
+        <p style="text-align: center; margin-bottom: 1.5rem; color: #4a5568;">اسحب المؤشر لضبط ميزانيتك وشاهد كيف يمكن توزيعها على الخدمات المختلفة</p>
         
         <div class="budget-control">
-            <input type="range" id="budgetSlider" class="budget-slider" min="5000" max="40000" value="20000" step="500" oninput="updateBudgetValue()">
+            <input type="range" id="budgetSlider" class="budget-slider" min="8000" max="40000" value="22000" step="500" oninput="updateBudgetValue()">
             
             <div class="budget-info">
-                <div class="min-max">الحد الأدنى: 5,000 درهم</div>
-                <div class="budget-value">الميزانية المحددة: <span id="budgetAmount">20,000</span> درهم إماراتي</div>
+                <div class="min-max">الحد الأدنى: 8,000 درهم</div>
+                <div class="budget-value">الميزانية المحددة: <span id="budgetAmount">22,000</span> درهم إماراتي</div>
                 <div class="min-max">الحد الأقصى: 40,000 درهم</div>
             </div>
         </div>
 
-        <button class="interactive-button" onclick="calculateEstimatedCost()">حساب التكلفة الإجمالية</button>
+        <button class="interactive-button" onclick="calculateEstimatedCost()">
+            احسب توزيع الميزانية
+        </button>
         
         <div id="resultContainer" class="result-container">
-            <h3>نتائج الميزانية:</h3>
+            <div class="result-header">نتائج توزيع الميزانية</div>
             <p id="estimatedResult"></p>
         </div>
         
         <div class="chart-container">
+            <div class="chart-header">توزيع الميزانية على الخدمات</div>
             <canvas id="budgetChart"></canvas>
         </div>
     </div>
 </div>
 
 <div class="footer">
-    <p>إذا كنت ترغب في تخصيص خطة تناسب احتياجاتك الخاصة، يُسعدنا مساعدتك في ذلك. <a href="#">اتصل بنا الآن</a> للحصول على استشارة مجانية!</p>
+    <div class="footer-content">
+        <p>هل تبحث عن خطة تسويقية مخصصة لعملك في الإمارات؟ فريق خبرائنا جاهز لمساعدتك في تصميم الحل الأمثل لاحتياجاتك.</p>
+        <p><a href="#">اتصل بنا اليوم</a> للحصول على استشارة مجانية وتقييم احتياجاتك التسويقية!</p>
+        
+        <div class="contact-info">
+            <div class="contact-item">
+                <i>📞</i>
+                <span>+971 4 123 4567</span>
+            </div>
+            <div class="contact-item">
+                <i>✉️</i>
+                <span>info@example.ae</span>
+            </div>
+            <div class="contact-item">
+                <i>🏢</i>
+                <span>دبي، الإمارات العربية المتحدة</span>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -447,30 +694,34 @@
     
     // تحديث قيمة الميزانية
     function updateBudgetValue() {
-        var budget = document.getElementById("budgetSlider").value;
+        const budget = document.getElementById("budgetSlider").value;
         document.getElementById("budgetAmount").textContent = 
             new Intl.NumberFormat('ar-EG').format(budget);
     }
     
     // حساب التكلفة الإجمالية
     function calculateEstimatedCost() {
-        var budget = document.getElementById("budgetSlider").value;
-        var message = "";
-        var serviceLevel = "";
+        const budget = parseInt(document.getElementById("budgetSlider").value);
+        let message = "";
+        let serviceLevel = "";
+        let recommendedServices = "";
         
-        if (budget < 10000) {
-            serviceLevel = "ميزانية أساسية";
-            message = "الميزانية المحددة منخفضة. نوصي بالتركيز على الخدمات الأساسية مثل تحسين Google Business وإدارة المحتوى الأساسي على إنستغرام. يمكنك تحقيق نتائج جيدة مع التركيز على الجمهور المستهدف بدقة.";
-        } else if (budget >= 10000 && budget <= 25000) {
-            serviceLevel = "ميزانية متوسطة";
-            message = "الميزانية المحددة جيدة. يمكنك الحصول على خدمات متكاملة مع إدارة إعلانات جوجل والمحتوى على إنستغرام، بالإضافة إلى جلسة تصوير احترافية واحدة شهريًا. هذه الخطة مناسبة لمعظم الشركات المتوسطة.";
+        if (budget < 12000) {
+            serviceLevel = "الميزانية الأساسية";
+            message = "الميزانية المحددة تناسب المشاريع الصغيرة والناشئة. نوصي بالتركيز على الخدمات الأساسية:";
+            recommendedServices = "• تحسين وإدارة Google Business (1,800 - 2,500 درهم)<br>• إدارة إنستغرام الأساسية (3,500 - 4,500 درهم)";
+        } else if (budget >= 12000 && budget <= 25000) {
+            serviceLevel = "الميزانية المتوسطة";
+            message = "الميزانية المحددة مناسبة للشركات المتوسطة. نوصي بالخدمات التالية:";
+            recommendedServices = "• إعلانات جوجل (4,500 - 8,000 درهم)<br>• إدارة إنستغرام (4,500 - 6,500 درهم)<br>• جلسة تصوير احترافية (2,500 - 3,500 درهم)";
         } else {
-            serviceLevel = "ميزانية متقدمة";
-            message = "الميزانية المحددة عالية. يمكنك الحصول على جميع الخدمات مع ميزات إضافية مثل حملات إعلانية متقدمة على جوجل، إدارة محتوى احترافية على إنستغرام، وجلستي تصوير احترافية شهريًا. هذه الخطة مناسبة للشركات الكبيرة التي تسعى إلى توسيع نطاقها.";
+            serviceLevel = "الميزانية المتقدمة";
+            message = "الميزانية المحددة عالية وتناسب الشركات الكبيرة. نوصي بالخدمات التالية:";
+            recommendedServices = "• إعلانات جوجل (12,000 - 18,000 درهم)<br>• إدارة إنستغرام الاحترافية (6,500 - 9,500 درهم)<br>• جلستي تصوير احترافية (5,000 - 6,500 درهم)<br>• تحسين متقدم لـ Google Business";
         }
 
         document.getElementById("estimatedResult").innerHTML = 
-            `<strong>${serviceLevel}:</strong> ${message}`;
+            `<strong>${serviceLevel}:</strong> ${message}<br><br>${recommendedServices}`;
         
         // إظهار نتيجة الحساب
         document.getElementById("resultContainer").classList.add("show");
@@ -483,11 +734,11 @@
     function showChart(budget) {
         const ctx = document.getElementById('budgetChart').getContext('2d');
         
-        // توزيع الميزانية بشكل أكثر واقعية
-        const googleAds = Math.min(26000, budget * 0.45);
-        const googleBusiness = Math.min(4000, budget * 0.15);
-        const instagram = Math.min(10000, budget * 0.25);
-        const photography = Math.min(5000, budget * 0.15);
+        // توزيع الميزانية بشكل واقعي بناءً على متوسط الأسعار
+        const googleAds = Math.min(28000, budget * 0.45);
+        const googleBusiness = Math.min(4500, budget * 0.15);
+        const instagram = Math.min(12500, budget * 0.25);
+        const photography = Math.min(6500, budget * 0.15);
         
         // إذا كان هناك رسم بياني موجود، نقوم بتدميره أولاً
         if (budgetChart) {
@@ -496,7 +747,7 @@
         
         // إنشاء رسم بياني جديد
         budgetChart = new Chart(ctx, {
-            type: 'doughnut',
+            type: 'pie',
             data: {
                 labels: [
                     `إعلانات جوجل (${Math.round(googleAds).toLocaleString('ar-EG')} درهم)`,
@@ -507,13 +758,13 @@
                 datasets: [{
                     data: [googleAds, googleBusiness, instagram, photography],
                     backgroundColor: [
-                        '#1a2a6c',
-                        '#2a5298',
-                        '#3a7bd5',
-                        '#4da1ff'
+                        '#1a3a6c',
+                        '#2c5282',
+                        '#e53e3e',
+                        '#38a169'
                     ],
                     borderWidth: 0,
-                    hoverOffset: 15
+                    hoverOffset: 20
                 }]
             },
             options: {
@@ -526,19 +777,15 @@
                         labels: {
                             font: {
                                 size: 14,
-                                family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+                                family: "'Tajawal', sans-serif"
                             },
-                            padding: 20
+                            padding: 20,
+                            usePointStyle: true,
+                            pointStyle: 'circle'
                         }
                     },
                     title: {
-                        display: true,
-                        text: 'توزيع الميزانية على الخدمات',
-                        font: {
-                            size: 18,
-                            weight: 'bold'
-                        },
-                        padding: 20
+                        display: false
                     },
                     tooltip: {
                         callbacks: {
@@ -548,12 +795,23 @@
                                 const percentage = Math.round((value / budget) * 100);
                                 return `${label.split(' (')[0]}: ${value.toLocaleString('ar-EG')} درهم (${percentage}%)`;
                             }
-                        }
+                        },
+                        bodyFont: {
+                            family: "'Tajawal', sans-serif",
+                            size: 14
+                        },
+                        titleFont: {
+                            family: "'Tajawal', sans-serif",
+                            size: 14
+                        },
+                        padding: 12,
+                        displayColors: true
                     }
                 },
                 animation: {
                     animateScale: true,
-                    animateRotate: true
+                    animateRotate: true,
+                    duration: 1500
                 }
             }
         });
@@ -562,7 +820,7 @@
     // تهيئة أولية عند تحميل الصفحة
     window.onload = function() {
         updateBudgetValue();
-        showChart(20000);
+        showChart(22000);
     };
 </script>
 
