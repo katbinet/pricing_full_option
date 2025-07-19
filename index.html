@@ -4,100 +4,354 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>التسعير الشهري التفاعلي</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            direction: rtl;
-            background-color: #f4f4f4;
+        :root {
+            --primary: #007bff;
+            --secondary: #6c757d;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --dark: #343a40;
+            --light: #f8f9fa;
+        }
+        
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            direction: rtl;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+        
         header {
-            background-color: #343a40;
+            background: linear-gradient(to right, #1a2a6c, #2a5298);
             color: white;
-            padding: 20px;
+            padding: 2.5rem 1rem;
             text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        .container {
-            width: 80%;
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
             margin: 0 auto;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
+            opacity: 0.9;
         }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+        
         h2 {
-            color: #343a40;
+            color: #1a2a6c;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
         }
+        
+        h3 {
+            color: #2a5298;
+            margin: 1.5rem 0 1rem;
+            font-size: 1.4rem;
+        }
+        
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin: 1.5rem 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
+        
         th, td {
-            padding: 10px;
+            padding: 1.2rem 1rem;
             text-align: center;
             position: relative;
         }
-        th {
-            background-color: #007bff;
+        
+        thead {
+            background: linear-gradient(to right, #2a5298, #1a2a6c);
             color: white;
         }
-        td:hover {
-            background-color: #f1f1f1;
+        
+        th {
+            font-weight: 600;
+            font-size: 1.1rem;
         }
+        
+        tbody tr {
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #e1e5eb;
+        }
+        
+        tbody tr:hover {
+            background-color: #f8fbff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        tbody tr:last-child {
+            font-weight: bold;
+            background-color: #f0f7ff;
+            font-size: 1.2rem;
+            color: #1a2a6c;
+        }
+        
         .tooltip {
+            display: inline-block;
+            margin-right: 8px;
+            width: 22px;
+            height: 22px;
+            background-color: var(--info);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 22px;
+            font-size: 14px;
+            cursor: help;
+            position: relative;
+        }
+        
+        .tooltip-text {
             visibility: hidden;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.85);
             color: #fff;
             text-align: center;
-            border-radius: 5px;
-            padding: 5px;
+            border-radius: 6px;
+            padding: 10px;
             position: absolute;
             z-index: 1;
-            bottom: 125%; /* Position above the text */
-            left: 50%;
-            margin-left: -60px;
+            bottom: 125%;
+            right: 50%;
+            transform: translateX(50%);
+            width: 250px;
             opacity: 0;
             transition: opacity 0.3s;
+            font-size: 0.9rem;
+            line-height: 1.5;
         }
-        td:hover .tooltip {
+        
+        .tooltip:hover .tooltip-text {
             visibility: visible;
             opacity: 1;
         }
-        .footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #343a40;
-            color: white;
-            margin-top: 20px;
+        
+        .interactive-section {
+            background: linear-gradient(to right, #f8fbff, #e6f2ff);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
-        .interactive-button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            margin-top: 20px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
+        
+        .budget-control {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1.5rem 0;
         }
-        .interactive-button:hover {
-            background-color: #0056b3;
-        }
+        
         .budget-slider {
             width: 100%;
-            margin-top: 20px;
+            height: 12px;
+            border-radius: 10px;
+            background: #dde6f0;
+            outline: none;
+            -webkit-appearance: none;
         }
+        
+        .budget-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
+        }
+        
+        .budget-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+        
         .budget-value {
-            font-size: 18px;
+            font-size: 1.5rem;
             font-weight: bold;
+            color: var(--primary);
         }
+        
+        .min-max {
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+        
+        .interactive-button {
+            background: linear-gradient(to right, #1a2a6c, #2a5298);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            margin: 1.5rem 0;
+            cursor: pointer;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(26, 42, 108, 0.3);
+            display: block;
+            width: 100%;
+        }
+        
+        .interactive-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(26, 42, 108, 0.4);
+        }
+        
+        .result-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--success);
+            display: none;
+        }
+        
+        .result-container.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
         .chart-container {
-            margin-top: 20px;
+            margin: 2.5rem 0 1rem;
+            height: 380px;
+            position: relative;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(to right, #1a2a6c, #2a5298);
+            color: white;
+            margin-top: 3rem;
+        }
+        
+        .footer p {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+        
+        .footer a {
+            color: #a3d0ff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .service-header {
+            background: linear-gradient(to right, #2a5298, #1a2a6c);
+            color: white;
+            padding: 1.2rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        .service-price {
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #1a2a6c;
+        }
+        
+        .service-description {
+            padding: 0 1.5rem 1.5rem;
+            text-align: center;
+            color: #555;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 1.5rem;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            header p {
+                font-size: 1rem;
+            }
+            
+            .service-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-container {
+                height: 300px;
+            }
         }
     </style>
 </head>
@@ -105,117 +359,212 @@
 
 <header>
     <h1>خدمات التسعير الشهري التفاعلي</h1>
-    <p>إليك تقدير تكلفة الخدمات الشهرية المختلفة. قم بتحديد الميزانية للحصول على أفضل النتائج!</p>
+    <p>إليك تقدير تكلفة الخدمات الشهرية المختلفة. قم بتحديد الميزانية للحصول على أفضل النتائج المخصصة لاحتياجاتك!</p>
 </header>
 
 <div class="container">
     <h2>تفاصيل التكلفة الشهرية</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>البند</th>
-                <th>التكلفة الشهرية التقديرية (درهم إماراتي)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>إعلانات جوجل <span class="tooltip">إعلانات جوجل يمكن أن تكون ذات تكلفة مرتفعة حسب النطاق.</span></td>
-                <td>3,700 - 26,000</td>
-            </tr>
-            <tr>
-                <td>تحسين وإدارة Google Business <span class="tooltip">تحسين الملف يمكن أن يزيد من التفاعل مع العملاء.</span></td>
-                <td>1,250 - 4,000</td>
-            </tr>
-            <tr>
-                <td>إدارة المحتوى على إنستغرام <span class="tooltip">إدارة المحتوى تساعد في تحسين التواصل مع العملاء عبر المنصات الاجتماعية.</span></td>
-                <td>3,000 - 10,000</td>
-            </tr>
-            <tr>
-                <td>جلسة تصوير احترافية (مرة واحدة) <span class="tooltip">تعزز الجلسات التصويرية من جودة المحتوى البصري.</span></td>
-                <td>2,000 - 5,000</td>
-            </tr>
-            <tr>
-                <td><strong>الإجمالي</strong></td>
-                <td><strong>7,950 - 40,000</strong></td>
-            </tr>
-        </tbody>
-    </table>
     
-    <h3>حدد ميزانيتك الشهرية:</h3>
-    <input type="range" id="budgetSlider" class="budget-slider" min="5000" max="40000" value="20000" step="500" oninput="updateBudgetValue()">
-    <p class="budget-value">الميزانية المحددة: <span id="budgetAmount">20000</span> درهم إماراتي</p>
+    <div class="service-grid">
+        <div class="service-card">
+            <div class="service-header">إعلانات جوجل</div>
+            <div class="service-price">3,700 - 26,000 درهم</div>
+            <div class="service-description">
+                حملات إعلانية مدفوعة لزيادة الظهور والتحويلات
+                <div class="tooltip">?
+                    <span class="tooltip-text">إعلانات جوجل يمكن أن تكون ذات تكلفة مرتفعة حسب النطاق وحجم الحملة الإعلانية</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="service-card">
+            <div class="service-header">تحسين وإدارة Google Business</div>
+            <div class="service-price">1,250 - 4,000 درهم</div>
+            <div class="service-description">
+                تحسين ملفك التجاري وزيادة التفاعل مع العملاء
+                <div class="tooltip">?
+                    <span class="tooltip-text">تحسين الملف يمكن أن يزيد من التفاعل مع العملاء ويساعد في تحسين الظهور المحلي</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="service-card">
+            <div class="service-header">إدارة المحتوى على إنستغرام</div>
+            <div class="service-price">3,000 - 10,000 درهم</div>
+            <div class="service-description">
+                إنشاء محتوى جذاب وإدارة التفاعل على المنصة
+                <div class="tooltip">?
+                    <span class="tooltip-text">إدارة المحتوى تساعد في تحسين التواصل مع العملاء عبر المنصات الاجتماعية وزيادة المتابعين</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="service-card">
+            <div class="service-header">جلسة تصوير احترافية</div>
+            <div class="service-price">2,000 - 5,000 درهم</div>
+            <div class="service-description">
+                جلسات تصوير احترافية للمنتجات والخدمات
+                <div class="tooltip">?
+                    <span class="tooltip-text">تعزز الجلسات التصويرية من جودة المحتوى البصري وتساعد في تسويق منتجاتك بشكل احترافي</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <button class="interactive-button" onclick="calculateEstimatedCost()">حساب التكلفة الإجمالية</button>
-    
-    <p id="estimatedResult"></p>
-    
-    <div class="chart-container" id="chartContainer">
-        <!-- الرسم البياني سيظهر هنا -->
+    <div class="interactive-section">
+        <h3>حدد ميزانيتك الشهرية:</h3>
+        
+        <div class="budget-control">
+            <input type="range" id="budgetSlider" class="budget-slider" min="5000" max="40000" value="20000" step="500" oninput="updateBudgetValue()">
+            
+            <div class="budget-info">
+                <div class="min-max">الحد الأدنى: 5,000 درهم</div>
+                <div class="budget-value">الميزانية المحددة: <span id="budgetAmount">20,000</span> درهم إماراتي</div>
+                <div class="min-max">الحد الأقصى: 40,000 درهم</div>
+            </div>
+        </div>
+
+        <button class="interactive-button" onclick="calculateEstimatedCost()">حساب التكلفة الإجمالية</button>
+        
+        <div id="resultContainer" class="result-container">
+            <h3>نتائج الميزانية:</h3>
+            <p id="estimatedResult"></p>
+        </div>
+        
+        <div class="chart-container">
+            <canvas id="budgetChart"></canvas>
+        </div>
     </div>
 </div>
 
 <div class="footer">
-    <p>إذا كنت ترغب في تخصيص خطة تناسب احتياجاتك الخاصة، يُسعدنا مساعدتك في ذلك.</p>
+    <p>إذا كنت ترغب في تخصيص خطة تناسب احتياجاتك الخاصة، يُسعدنا مساعدتك في ذلك. <a href="#">اتصل بنا الآن</a> للحصول على استشارة مجانية!</p>
 </div>
 
 <script>
+    // متغير لحفظ الرسم البياني
+    let budgetChart = null;
+    
+    // تحديث قيمة الميزانية
     function updateBudgetValue() {
         var budget = document.getElementById("budgetSlider").value;
-        document.getElementById("budgetAmount").textContent = budget;
+        document.getElementById("budgetAmount").textContent = 
+            new Intl.NumberFormat('ar-EG').format(budget);
     }
-
+    
+    // حساب التكلفة الإجمالية
     function calculateEstimatedCost() {
         var budget = document.getElementById("budgetSlider").value;
         var message = "";
-
+        var serviceLevel = "";
+        
         if (budget < 10000) {
-            message = "الميزانية المحددة منخفضة. قد تحتاج إلى تعديل خدماتك أو تقليل النطاق.";
+            serviceLevel = "ميزانية أساسية";
+            message = "الميزانية المحددة منخفضة. نوصي بالتركيز على الخدمات الأساسية مثل تحسين Google Business وإدارة المحتوى الأساسي على إنستغرام. يمكنك تحقيق نتائج جيدة مع التركيز على الجمهور المستهدف بدقة.";
         } else if (budget >= 10000 && budget <= 25000) {
-            message = "الميزانية المحددة جيدة. يمكنك الحصول على خدمات متكاملة مع إدارة إعلانات جوجل والمحتوى على إنستغرام.";
+            serviceLevel = "ميزانية متوسطة";
+            message = "الميزانية المحددة جيدة. يمكنك الحصول على خدمات متكاملة مع إدارة إعلانات جوجل والمحتوى على إنستغرام، بالإضافة إلى جلسة تصوير احترافية واحدة شهريًا. هذه الخطة مناسبة لمعظم الشركات المتوسطة.";
         } else {
-            message = "الميزانية المحددة عالية. يمكنك الحصول على جميع الخدمات مع ميزات إضافية مثل جلسات تصوير احترافية.";
+            serviceLevel = "ميزانية متقدمة";
+            message = "الميزانية المحددة عالية. يمكنك الحصول على جميع الخدمات مع ميزات إضافية مثل حملات إعلانية متقدمة على جوجل، إدارة محتوى احترافية على إنستغرام، وجلستي تصوير احترافية شهريًا. هذه الخطة مناسبة للشركات الكبيرة التي تسعى إلى توسيع نطاقها.";
         }
 
-        document.getElementById("estimatedResult").textContent = message;
+        document.getElementById("estimatedResult").innerHTML = 
+            `<strong>${serviceLevel}:</strong> ${message}`;
+        
+        // إظهار نتيجة الحساب
+        document.getElementById("resultContainer").classList.add("show");
+        
+        // عرض الرسم البياني
         showChart(budget);
     }
-
+    
+    // عرض الرسم البياني
     function showChart(budget) {
-        var chartContainer = document.getElementById("chartContainer");
-        chartContainer.innerHTML = "";
-
-        var canvas = document.createElement("canvas");
-        chartContainer.appendChild(canvas);
-
-        var ctx = canvas.getContext("2d");
-        var chart = new Chart(ctx, {
-            type: "bar",
+        const ctx = document.getElementById('budgetChart').getContext('2d');
+        
+        // توزيع الميزانية بشكل أكثر واقعية
+        const googleAds = Math.min(26000, budget * 0.45);
+        const googleBusiness = Math.min(4000, budget * 0.15);
+        const instagram = Math.min(10000, budget * 0.25);
+        const photography = Math.min(5000, budget * 0.15);
+        
+        // إذا كان هناك رسم بياني موجود، نقوم بتدميره أولاً
+        if (budgetChart) {
+            budgetChart.destroy();
+        }
+        
+        // إنشاء رسم بياني جديد
+        budgetChart = new Chart(ctx, {
+            type: 'doughnut',
             data: {
-                labels: ["إعلانات جوجل", "تحسين Google Business", "إدارة إنستغرام", "جلسة تصوير"],
+                labels: [
+                    `إعلانات جوجل (${Math.round(googleAds).toLocaleString('ar-EG')} درهم)`,
+                    `تحسين Google Business (${Math.round(googleBusiness).toLocaleString('ar-EG')} درهم)`,
+                    `إدارة إنستغرام (${Math.round(instagram).toLocaleString('ar-EG')} درهم)`,
+                    `جلسة تصوير (${Math.round(photography).toLocaleString('ar-EG')} درهم)`
+                ],
                 datasets: [{
-                    label: "التكلفة المتوقعة",
-                    data: [
-                        budget * 0.2, // إعلانات جوجل
-                        budget * 0.1, // تحسين Google Business
-                        budget * 0.3, // إدارة إنستغرام
-                        budget * 0.4  // جلسة تصوير
+                    data: [googleAds, googleBusiness, instagram, photography],
+                    backgroundColor: [
+                        '#1a2a6c',
+                        '#2a5298',
+                        '#3a7bd5',
+                        '#4da1ff'
                     ],
-                    backgroundColor: ["#007bff", "#28a745", "#ffc107", "#dc3545"]
+                    borderWidth: 0,
+                    hoverOffset: 15
                 }]
             },
             options: {
                 responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'left',
+                        rtl: true,
+                        labels: {
+                            font: {
+                                size: 14,
+                                family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+                            },
+                            padding: 20
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'توزيع الميزانية على الخدمات',
+                        font: {
+                            size: 18,
+                            weight: 'bold'
+                        },
+                        padding: 20
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw || 0;
+                                const percentage = Math.round((value / budget) * 100);
+                                return `${label.split(' (')[0]}: ${value.toLocaleString('ar-EG')} درهم (${percentage}%)`;
+                            }
+                        }
                     }
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
                 }
             }
         });
     }
+    
+    // تهيئة أولية عند تحميل الصفحة
+    window.onload = function() {
+        updateBudgetValue();
+        showChart(20000);
+    };
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </body>
 </html>
